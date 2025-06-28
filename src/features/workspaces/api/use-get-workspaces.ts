@@ -3,6 +3,6 @@ import { api } from "../../../../convex/_generated/api";
 
 export const useGetWorkspaces = () => {
     const data = useQuery(api.workspaces.get);
-    const isLading = data === undefined;
-    return {data, isLading}
+    const isLoading = data === undefined;
+    return {data, isLoading}
 }   

@@ -7,10 +7,10 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();
   const [open, setOpen] = useCreateWorkspaceModal();
-  const {data, isLading} = useGetWorkspaces();
+  const {data, isLoading} = useGetWorkspaces();
   const workspaceId = useMemo(()=>data?.[0]?._id, [data]); 
   useEffect(()=>{
-    if(isLading){
+    if(isLoading){
       console.log("loading");
       return;
     }
@@ -22,7 +22,7 @@ export default function Home() {
       setOpen(true);
       console.log("open create workspace modal");
     }
-  }, [workspaceId, isLading, open, setOpen, router])
+  }, [workspaceId, isLoading, open, setOpen, router])
   return (
 
     <div>
