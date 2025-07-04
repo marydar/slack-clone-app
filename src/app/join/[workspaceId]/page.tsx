@@ -11,6 +11,7 @@ import {useJoin} from "../../../features/workspaces/api/use-join";
 import {toast} from "sonner";
 import {useRouter} from "next/navigation";
 import {cn} from "@/lib/utils";
+import { useMemo, useEffect, use } from "react";
 interface JoinPageProps{
     params:{
         workspaceId:string
@@ -19,8 +20,14 @@ interface JoinPageProps{
 const JoinPage = ({params}:JoinPageProps) => {
     const workspaceId = useWorkspaceId()
     const {data, isLoading} = useGetWorkspaceInfo({id:workspaceId})
+    const isMember = useMemo(()=>data?.isMember, [data?.isMember])
     const {mutate, isPending} = useJoin()
     const router  = useRouter()
+    useEffect(()=>{
+        if(isMember){
+            router.push(`/workspace/${workspaceId}`)
+        }
+    },[isMember, router, workspaceId])
     if(isLoading){
         return (
             <div className="h-full flex items-center justify-center">
