@@ -8,7 +8,7 @@ interface WorkspaceIdLayoutProps {
 }
 const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
     return ( 
-        <div className="h-full bg-gray-300">
+        <div className="h-full">
             <Toolbar/>
             <div className="flex h-[calc(100vh-40px)]">
                 <Sidebar/>
@@ -26,7 +26,7 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
                     <ResizableHandle withHandle/>
                     <ResizablePanel 
                         minSize={20}
-                        className="bg-[#ABABAD]">
+                        className="bg-white/90">
                         {children}
                     </ResizablePanel>
                 </ResizablePanelGroup>
