@@ -38,12 +38,14 @@ const Editor =({
     const containerRef = useRef<HTMLDivElement>(null);
     const disabledRef = useRef(disabled);
     const [text, setText] = useState("")
+
     useLayoutEffect(()=>{
         submitRef.current = onSubmit;
         placeHolderRef.current = placeholder;
         defaultValueRef.current = defaultValue; 
         disabledRef.current = disabled;
     })
+
     useEffect(()=>{
         if(!containerRef.current) return
         const container = containerRef.current
@@ -53,6 +55,30 @@ const Editor =({
         const options: QuillOptions= {
             theme: 'snow',
             placeholder: placeHolderRef.current,
+            modules: {
+                toolbar:[
+                    ["bold", "italic", "underline", "strike", "link"],
+                    [{list: "ordered"}, {list: "bullet"}],
+                ],
+                keyboard:{
+                    bindings:{
+                        enter:{
+                            key:"Enter",
+                            handler:()=>{
+                                //TODOD send message
+                                return 
+                            }
+                        },
+                        shift_enter:{
+                            key:"Enter",
+                            shiftKey:true,
+                            handler:()=>{
+                                quill.insertText(quill.getSelection()?.index || 0, "\n")
+                            }
+                        }
+                    }
+                }
+            }
         }
         const quill =new Quill(editorContainer, options)
         quillRef.current = quill
