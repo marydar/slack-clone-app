@@ -3,11 +3,12 @@ import "quill/dist/quill.snow.css"
 import { RefObject, useEffect, useLayoutEffect, useRef } from 'react'
 import { Button } from './ui/button'
 import { PiTextAa } from 'react-icons/pi'
-import { Smile, ImageIcon } from 'lucide-react' 
+import { Smile, ImageIcon, XIcon } from 'lucide-react' 
 import { MdSend } from 'react-icons/md'
 import { Hint } from './hint'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import Image from "next/image"
 
 type EditorValue = {
     image: File | null
@@ -37,7 +38,9 @@ const Editor =({
     const defaultValueRef = useRef(defaultValue);
     const containerRef = useRef<HTMLDivElement>(null);
     const disabledRef = useRef(disabled);
+    const imageElementRef = useRef<HTMLInputElement>(null);
     const [text, setText] = useState("")
+    const [image, setImage] = useState<File | null>(null)
 
     useLayoutEffect(()=>{
         submitRef.current = onSubmit;
@@ -110,8 +113,40 @@ const Editor =({
 
     return (
         <div className="flex flex-col">
+            <input 
+                type="file" 
+                accept='image/*'
+                ref={imageElementRef}
+                onChange={(e)=>{
+                    setImage(e.target.files![0])
+                }}
+                className='hidden'
+             />
             <div className="flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm transition bg-white ">
                 <div ref={containerRef} className='h-full ql-custom'/>
+                {!!image && (
+                    <div className='p-2'>
+                        <div className='relative size-[62px] flex justify-center items-center group/image'>
+                        <Hint label='Remove image'>
+                            <button 
+                                onClick={()=>{
+                                    setImage(null)
+                                    imageElementRef.current!.value = ""
+                                }}
+                                className='hidden group-hover/image:flex rounded-full bg-black/70 hover:bg-black absolute -top-2.5 -right-2.5 text-white size-6 z-[4] border-2 border-white items-center justify-center'
+                            >
+                                <XIcon className='size-4'/>
+                            </button>
+                            </Hint>
+                            <Image 
+                                src={URL.createObjectURL(image)}
+                                alt="image"
+                                fill
+                                className='rounded-xl overflow-hidden border object-cover'
+                            />
+                        </div>
+                    </div>
+                )}
                 <div className='flex px-2 pb-2 z-[5]'>
                     <Hint label='Hide formatting'>
                         <Button
@@ -144,7 +179,7 @@ const Editor =({
                                 size="iconSm"
                                 variant={"ghost"}
                                 onClick={()=>{
-                                    console.log("clicked")
+                                    imageElementRef.current?.click()
                                 }}
                             >
                                 <ImageIcon className='size-4'/>
@@ -194,11 +229,18 @@ const Editor =({
                     )}
                 </div>
             </div>
-            <div className='p-2 text-[10px] text-muted-foreground flex justify-end'>
-                <p>
-                    <strong>Shift + Enter</strong> to add a new line
-                </p>
-            </div>
+            {variant === "create" && (
+                <div className={cn(
+                    'p-2 text-[10px] text-muted-foreground flex justify-end opacity-0 transition',
+                    !isEmpty && 'opacity-100'
+                )}
+                >
+                    <p>
+                        <strong>Shift + Enter</strong> to add a new line
+                    </p>
+                </div>
+            )}
+
         </div>
     )
 }
