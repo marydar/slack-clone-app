@@ -9,6 +9,7 @@ import { Hint } from './hint'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import Image from "next/image"
+import { on } from 'events'
 
 type EditorValue = {
     image: File | null
@@ -68,8 +69,13 @@ const Editor =({
                         enter:{
                             key:"Enter",
                             handler:()=>{
-                                //TODOD send message
-                                return 
+                                const text = quill.getText()
+                                const addedImage = imageElementRef.current?.files?.[0] || null 
+
+                                const isEmpty =!addedImage && text.replace(/<(.|\n)*?>/g, "").trim().length===0
+                                if(isEmpty) return
+                                const body = JSON.stringify(quill.getContents())
+                                submitRef.current?.({body, image: addedImage})
                             }
                         },
                         shift_enter:{
@@ -109,7 +115,7 @@ const Editor =({
         }
 
     },[innerRef])
-    const isEmpty = text.replace(/<(.|\n)*?>/g, "").trim().length===0
+    const isEmpty =!image && text.replace(/<(.|\n)*?>/g, "").trim().length===0
 
     return (
         <div className="flex flex-col">
@@ -122,7 +128,10 @@ const Editor =({
                 }}
                 className='hidden'
              />
-            <div className="flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm transition bg-white ">
+            <div className={cn(
+                "flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm transition bg-white ",
+                disabled && "opacity-50 pointer-events-none"
+            )}>
                 <div ref={containerRef} className='h-full ql-custom'/>
                 {!!image && (
                     <div className='p-2'>
@@ -150,7 +159,7 @@ const Editor =({
                 <div className='flex px-2 pb-2 z-[5]'>
                     <Hint label='Hide formatting'>
                         <Button
-                            disabled={false}
+                            disabled={disabled}
                             size="iconSm"
                             variant={"ghost"}
                             onClick={()=>{
@@ -162,7 +171,7 @@ const Editor =({
                     </Hint>
                     <Hint label='Emoji'>
                         <Button
-                            disabled={false}
+                            disabled={disabled}
                             size="iconSm"
                             variant={"ghost"}
                             onClick={()=>{
@@ -175,7 +184,7 @@ const Editor =({
                     {variant==="create" &&(
                         <Hint label='Image'>
                             <Button
-                                disabled={false}
+                                disabled={disabled}
                                 size="iconSm"
                                 variant={"ghost"}
                                 onClick={()=>{
@@ -191,10 +200,8 @@ const Editor =({
                             <Button 
                                 variant="outline"
                                 size="sm"
-                                onClick={()=>{
-                                    console.log("clicked")
-                                }}
-                                disabled={false}
+                                onClick={onCancel}
+                                disabled={disabled}
                             >
                                 Cancel
                             </Button>
@@ -202,9 +209,12 @@ const Editor =({
                                 className='bg-[#26366B] hover:bg-[#26366B]/80 text-white'
                                 size="sm"
                                 onClick={()=>{
-                                    console.log("clicked")
+                                    onSubmit({
+                                        body: JSON.stringify(quillRef.current?.getContents()),
+                                        image,
+                                    })
                                 }}
-                                disabled={false}
+                                disabled={disabled}
                             >
                                 Save
                             </Button>
@@ -215,7 +225,10 @@ const Editor =({
                         disabled={disabled || isEmpty}
                         size="iconSm"
                         onClick={()=>{
-                            console.log("clicked")
+                            onSubmit({
+                                body: JSON.stringify(quillRef.current?.getContents()),
+                                image,
+                            })
                         }}
                         className={cn(
                             "ml-auto",
