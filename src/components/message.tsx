@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { use } from "react";
 import { useRemoveMessage } from "@/features/messages/api/use-remove-message";
+import { usePanel } from "@/hooks/use-panel";
 
 const Renderer = dynamic(() => import("@/components/renderer"),{ssr:false})
 const Editor = dynamic(() => import("@/components/editor"),{ssr:false})
@@ -65,6 +66,7 @@ export const Message = ({
 
     const {mutate: updateMessage, isPending: isUpdatingMessage} = useUpdateMessage();
     const {mutate: removeMessage, isPending: isRemovingMessage} = useRemoveMessage();
+    const {parentMessageId, onOpenMessage, onCloseMessage}= usePanel()
     const isPending = isUpdatingMessage
     const handleUpdate = ({body}:{body:string})=>{
         updateMessage({messageId:id, body},{
@@ -81,6 +83,9 @@ export const Message = ({
         await removeMessage({messageId:id},{
             onSuccess:()=>{
                 toast.success("Message removed")
+                if(parentMessageId === id){
+                    onCloseMessage()
+                }
             },
             onError:()=>{
                 toast.error("Failed to remove message")
@@ -126,7 +131,7 @@ export const Message = ({
                         isAuthor={isAuthor}
                         isPending={false}
                         handleEdit={()=>{setEditingId(id)}}
-                        handleThread={()=>{}}
+                        handleThread={()=>onOpenMessage(id)}
                         handleDelete={handleRemove}
                         handleReaction={()=>{}}
                         hideThreadButton={hideThreadButton}
@@ -189,7 +194,7 @@ export const Message = ({
                         isAuthor={isAuthor}
                         isPending={false}
                         handleEdit={()=>{setEditingId(id)}}
-                        handleThread={()=>{}}
+                        handleThread={()=>onOpenMessage(id)}
                         handleDelete={handleRemove}
                         handleReaction={()=>{}}
                         hideThreadButton={hideThreadButton}

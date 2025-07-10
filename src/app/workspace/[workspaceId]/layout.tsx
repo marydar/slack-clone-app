@@ -3,10 +3,17 @@ import { Toolbar } from "./toolbar";
 import { Sidebar } from "./sidebar";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { WorkspaceSidebar } from "./workspace-sidebar";
+import { usePanel } from "@/hooks/use-panel";
+import { Loader } from "lucide-react";
+import { Id } from "../../../../convex/_generated/dataModel";
+import { Thread } from "@/features/messages/components/thread";
 interface WorkspaceIdLayoutProps {
   children: React.ReactNode;
 }
 const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
+    const {parentMessageId, onCloseMessage} = usePanel()
+    const showPanel = !!parentMessageId
+
     return ( 
         <div className="h-full">
             <Toolbar/>
@@ -29,6 +36,26 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
                         className="bg-white/90">
                         {children}
                     </ResizablePanel>
+                    {showPanel && (
+                        <>
+                            <ResizableHandle withHandle/>
+                            <ResizablePanel
+                                minSize={20}
+                                defaultSize={29}
+                            >
+                                {parentMessageId ? (
+                                    <Thread
+                                        messageId={parentMessageId as Id<"messages">}
+                                        onCloseMessage={onCloseMessage}
+                                    />
+                                ) :  (
+                                    <div className="flex h-full itmes-center justify-center">
+                                        <Loader className="size-5 animate-spin text-muted-foreground"/>
+                                    </div>
+                                )}
+                            </ResizablePanel>
+                        </>
+                    )}
                 </ResizablePanelGroup>
             </div>
         </div> 
