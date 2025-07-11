@@ -23,7 +23,7 @@ import { differenceInMinutes } from "date-fns"
 const TIME_TRESHOLD = 5
 interface ThreadProps{
     messageId:Id<"messages">
-    onCloseMessage:()=>void
+    onClose:()=>void
 }
 type CreateMessageValues = {
     channelId:Id<"channels">
@@ -40,7 +40,7 @@ const formatDatelabel = (dateStr:string)=>{
 }
 
 const Editor = dynamic(() => import("@/components/editor"),{ssr:false})
-export const Thread = ({messageId, onCloseMessage}:ThreadProps)=>{
+export const Thread = ({messageId, onClose}:ThreadProps)=>{
     const workspaceId = useWorkspaceId()
     const channelId = useChannelId()
     const {data:currentMember} = useCurrentMember({workspaceId})
@@ -78,7 +78,7 @@ export const Thread = ({messageId, onCloseMessage}:ThreadProps)=>{
                     <p className="text-lg font-bold">
                         Thread
                     </p>
-                    <Button onClick={onCloseMessage} size={"iconSm"} variant={"ghost"}>
+                    <Button onClick={onClose} size={"iconSm"} variant={"ghost"}>
                         <XIcon className="size-5 stroke-[1.5]"/>
                     </Button>
                 </div>
@@ -95,11 +95,11 @@ export const Thread = ({messageId, onCloseMessage}:ThreadProps)=>{
                 <p className="text-lg font-bold">
                     Thread
                 </p>
-                <Button onClick={onCloseMessage} size={"iconSm"} variant={"ghost"}>
+                <Button onClick={onClose} size={"iconSm"} variant={"ghost"}>
                     <XIcon className="size-5 stroke-[1.5]"/>
                 </Button>
             </div>
-            <div className="flex flex-col gap-y-2 h-full itmes-center justify-center">
+            <div className="flex flex-col gap-y-2 h-full items-center justify-center">
                 <AlertTriangle className="size-5 text-muted-foreground"/>
                 <p className="text-sm text-muted-foreground">Message not found</p>
             </div>
@@ -152,7 +152,7 @@ export const Thread = ({messageId, onCloseMessage}:ThreadProps)=>{
                 <p className="text-lg font-bold">
                     Thread
                 </p>
-                <Button onClick={onCloseMessage} size={"iconSm"} variant={"ghost"}>
+                <Button onClick={onClose} size={"iconSm"} variant={"ghost"}>
                     <XIcon className="size-5 stroke-[1.5]"/>
                 </Button>
             </div>
