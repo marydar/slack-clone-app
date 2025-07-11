@@ -10,13 +10,15 @@ const populateThread = async (ctx:QueryCtx, messageId: Id<"messages">) => {
         .query("messages")
         .withIndex("by_parent_message_id", (q) => q.eq("parentMessageId", messageId))
         .collect();
-    if(messages.length === 0){
-        return {
-            count: 0,
-            image: undefined,
-            timeStamp:0,
-        }
-    };
+
+        if(messages.length === 0){
+            return {
+                count: 0,
+                image: undefined,
+                timeStamp:0,
+                name:""
+            }
+        };
     const lastMessage = messages[messages.length - 1];
     const lastMessageMember = await populateMember(ctx, lastMessage.memberId);
     if(!lastMessageMember){
@@ -24,13 +26,15 @@ const populateThread = async (ctx:QueryCtx, messageId: Id<"messages">) => {
             count:0,
             image: undefined,
             timeStamp:0,
+            name:""
         }
     }
     const lastMessageUser = await populateUser(ctx, lastMessageMember.userId);
     return {
         count: messages.length,
-        image: lastMessage?.image,
-        timeStamp: lastMessage.updatedAt,
+        image: lastMessageUser?.image,
+        timeStamp: lastMessage._creationTime,
+        name: lastMessageUser?.name
     }
 }
 const populateReaction = (ctx:QueryCtx, messageId: Id<"messages">) => {
@@ -127,6 +131,7 @@ export const get = query({
                             reactions: reactionsWithoutMemberIdProperty,
                             threadCount: thread.count,
                             threadImage: thread.image,
+                            threadName: thread.name,
                             threadTimeStamp: thread.timeStamp,
                         }
                     })
