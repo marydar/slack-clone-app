@@ -12,12 +12,8 @@ import {toast} from "sonner";
 import {useRouter} from "next/navigation";
 import {cn} from "@/lib/utils";
 import { useMemo, useEffect } from "react";
-interface JoinPageProps{
-    params:{
-        workspaceId:string
-    }
-}
-const JoinPage = ({params}:JoinPageProps) => {
+
+const JoinPage = () => {
     const workspaceId = useWorkspaceId()
     const {data, isLoading} = useGetWorkspaceInfo({id:workspaceId})
     const isMember = useMemo(()=>data?.isMember, [data?.isMember])

@@ -15,7 +15,7 @@ interface InviteModalProps {
   joinCode: string
 
 }
-export const InviteModal = ({open, setOpen, name, joinCode}:InviteModalProps) => {
+export const InviteModal = ({open, setOpen ,joinCode}:InviteModalProps) => {
     const workspaceId = useWorkspaceId()
     const {mutate, isPending} = useNewJoinCode()
 
