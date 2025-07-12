@@ -4,10 +4,8 @@ import { Search, Info } from "lucide-react"
 import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace"
 import { useGetMembers } from "@/features/members/api/use-get-members"
 import { useState } from "react"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 import {
-  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
@@ -15,7 +13,6 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command"
 import { useGetChannels } from "@/features/channels/api/use-get-channels"
 

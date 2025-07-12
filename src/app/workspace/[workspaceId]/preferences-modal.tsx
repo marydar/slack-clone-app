@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger , DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger , DialogClose } from "@/components/ui/dialog";
 import { TrashIcon } from "lucide-react";
 import { useState } from "react";
 import { useUpdateWorkspace } from "@/features/workspaces/api/use-update-workspace";

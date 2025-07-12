@@ -17,7 +17,6 @@ import { toast } from "sonner"
 import { useGetMessages } from "@/features/messages/api/use-get-messages"
 import { format } from "date-fns"
 import { isToday, isYesterday } from "date-fns"
-import { stat } from "fs"
 import { differenceInMinutes } from "date-fns"
 
 const TIME_TRESHOLD = 5

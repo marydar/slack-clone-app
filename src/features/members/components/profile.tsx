@@ -1,6 +1,6 @@
 import { Id } from "../../../../convex/_generated/dataModel";
 import { useGetMember } from "@/features/members/api/use-get-member";
-import { ChevronDown, ChevronDownIcon, Loader, Mail, MailIcon } from "lucide-react";
+import {  ChevronDownIcon, Loader, MailIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
 import { AlertTriangle } from "lucide-react";
@@ -13,7 +13,7 @@ import { useCurrentMember } from "../api/use-current-member";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuRadioGroup ,DropdownMenuRadioItem} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuRadioGroup ,DropdownMenuRadioItem} from "@/components/ui/dropdown-menu";
 interface ProfileProps{
     memberId:Id<"members">
     onClose:()=>void
@@ -24,8 +24,8 @@ export const Profile = ({memberId, onClose}:ProfileProps)=>{
     const workspaceId = useWorkspaceId()
     const {data:currentMember, isLoading:isCurrentMemberLoading} = useCurrentMember({workspaceId})
     const {data:member, isLoading:isMemberLoading} = useGetMember({id: memberId})
-    const {mutate:updateMember, isPending: isUpdatingMember} = useUpdateMember()
-    const {mutate:removeMember, isPending: isRemovingMember} = useRemoveMember()
+    const {mutate:updateMember} = useUpdateMember()
+    const {mutate:removeMember} = useRemoveMember()
 
     const onRemove = () => {
         removeMember({memberId},{

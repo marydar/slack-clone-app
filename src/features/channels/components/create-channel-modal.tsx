@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, DialogHeader } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogHeader } from "@/components/ui/dialog";
 
 import { useCreateChannelModal } from "../store/use-create-channel-modal";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,7 @@ export const CreateChannelModal = () => {
     const workspaceId = useWorkspaceId();
     const [open, setOpen] = useCreateChannelModal();
     const [name, setName] = useState("");
-    const {mutate, isPending} = useCreateChannel();
+    const {mutate} = useCreateChannel();
     const handleChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
         const value  = e.target.value.replace(/\s+/g, "-").toLowerCase();
         setName(value);   

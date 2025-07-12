@@ -2,7 +2,6 @@
 import React from 'react'
 import {useWorkspaceId} from "@/hooks/use-workspace-id"
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { useGetWorkspace } from '@/features/workspaces/api/use-get-workspace'
 import { useGetChannels } from '@/features/channels/api/use-get-channels'
 import {useMemo, useEffect} from  "react"

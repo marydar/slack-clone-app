@@ -1,4 +1,4 @@
-import { formatDistance, formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { ChevronRight } from "lucide-react";
 interface ThreadbarProps{

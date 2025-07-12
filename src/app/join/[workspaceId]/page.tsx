@@ -11,7 +11,7 @@ import {useJoin} from "../../../features/workspaces/api/use-join";
 import {toast} from "sonner";
 import {useRouter} from "next/navigation";
 import {cn} from "@/lib/utils";
-import { useMemo, useEffect, use } from "react";
+import { useMemo, useEffect } from "react";
 interface JoinPageProps{
     params:{
         workspaceId:string

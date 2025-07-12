@@ -1,15 +1,13 @@
 import { Id, Doc } from "../../convex/_generated/dataModel";
 import dynamic from "next/dynamic";
-import { format, isYesterday, isToday, set } from "date-fns";
+import { format, isYesterday, isToday } from "date-fns";
 import { Hint } from "./hint";
-import { Button } from "./ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Thumbnail } from "./thumbnail";
 import { Toolbar } from "./toolbar";
 import { useUpdateMessage } from "../features/messages/api/use-update-message";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { use } from "react";
 import { useRemoveMessage } from "@/features/messages/api/use-remove-message";
 import { usePanel } from "@/hooks/use-panel";
 import { Threadbar } from "./thread-bar";
